@@ -1,16 +1,72 @@
-# React + Vite
+📌 Descrição
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicação frontend em React + Vite para cadastrar, listar e deletar usuários.
+Consumindo uma API REST em http://localhost:3000 (via axios — src/services/api.js). Projeto simples e didático, ótimo para conectar com um backend local e estudar integração cliente/servidor.
 
-Currently, two official plugins are available:
+🗂 Estrutura principal do projeto
+public/                 # (opcional) assets estáticos
+src/
+├─ assets/              # imagens (ex: delete.svg)
+├─ pages/
+│  └─ Home/
+│     ├─ index.jsx
+│     └─ style.css
+├─ services/
+│  └─ api.js            # axios instance (baseURL: http://localhost:3000)
+├─ main.jsx
+├─ index.css
+index.html
+package.json
+vite.config.js (opcional)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+🚀 Requisitos
+Node.js (recomendo v16+ / v18+)
+NPM ou Yarn
+Backend em http://localhost:3000 (a API deve expor as rotas usadas: GET /user, POST /user, DELETE /user/:id)
 
-## React Compiler
+Observação: o arquivo src/services/api.js já aponta para http://localhost:3000. Se seu backend estiver em outra porta/host, altere baseURL ou use variável de ambiente (ex.: import.meta.env.VITE_API_URL).
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+⚙️ Instalação (Vite)
 
-## Expanding the ESLint configuration
+Instale dependências:
+npm install
+# ou
+yarn
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+Rodar em modo de desenvolvimento:
+npm run dev
+# ou
+yarn dev
+
+Isso abre a aplicação Vite (geralmente em http://localhost:5173). Abra no navegador.
+
+Build de produção:
+npm run build
+# ou
+yarn build
+
+🔗 Integração com a API
+
+O arquivo src/services/api.js contém:
+import axios from "axios";
+const api = axios.create({ baseURL: "http://localhost:3000" });
+export default api;
+
+Certifique-se de que o backend esteja em execução e permita CORS (o seu backend já usa cors).
+
+Se quiser definir a URL via variável de ambiente com Vite:
+const api = axios.create({ baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000" });
+
+e criar .env:
+VITE_API_URL=http://localhost:3000
+
+🧭 Como a interface funciona (resumo)
+Tela de cadastro com 3 campos (nome, idade, e-mail) e botão Cadastrar.
+Os inputs são refs (não controlados): ao clicar em Cadastrar a função createUsers faz POST /user com os valores.
+Ao montar o componente (useEffect), carrega usuários com GET /user e renderiza cards.
+Cada card possui botão de excluir que chama DELETE /user/:id.
+
+
+
+Servir a pasta dist com um servidor estático (ex.: serve -s dist) ou fazer deploy.     
